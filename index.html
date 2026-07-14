@@ -6,127 +6,200 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="apple-touch-icon" href="favicon.png" />
     <title>Embed camunda.io or cawemo diagrams in Notion</title>
-
     <style>
-      html {
-        font-family: Arial, Helvetica, sans-serif;
+      /* Miragon deep hero: navy gradient (#0a1230 → #050510) with a #335de4
+         blue glow, green #00e676 as the CTA / signature accent. */
+      :root {
+        --green: #00e676;
+        --green-strong: #00c853;
+        --blue: #335de4;
+        --navy: #0a1230;
+        --ink: #041207;
+        --radius: 14px;
       }
-
-      .form-container {
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        font-family: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Helvetica, Arial, sans-serif;
+        color: #fff;
+        /* Blue → green diagonal (top-left → bottom-right): Miragon blue #335de4
+           into green #00e676, on a blue-teal-to-green-dark base. */
+        background:
+          radial-gradient(900px 660px at 8% -8%, rgba(51, 93, 228, 0.6) 0%, transparent 55%),
+          radial-gradient(860px 700px at 104% 110%, rgba(0, 230, 118, 0.42) 0%, transparent 56%),
+          linear-gradient(135deg, #0f2a63 0%, #0b2f4d 48%, #063029 100%);
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 24px;
       }
+      .container { width: 100%; }
+      .container.embed-mode { position: fixed; inset: 0; padding: 0; background: #fff; }
 
-      .container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-
-      #form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-      }
-
-      #draw-iframe {
+      .hero {
         width: 100%;
-        height: 100%;
-        border: 0;
-      }
-
-      input[type="submit"] {
-        user-select: none;
-        transition: background 20ms ease-in 0s;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        height: 36px;
-        border-radius: 3px;
-        color: white;
-        font-size: 14px;
-        line-height: 1;
-        padding-left: 12px;
-        padding-right: 12px;
-        font-weight: 500;
-        background: rgb(225, 98, 89) none repeat scroll 0% 0%;
-        border: 1px solid rgb(190, 86, 67);
-        box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 2px;
+        max-width: 520px;
+        margin: 0 auto;
         text-align: center;
-        width: 90px;
+      }
+      .kicker {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--green);
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: clamp(28px, 5vw, 40px);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin: 0 0 14px;
+        font-weight: 800;
+      }
+      .lead {
+        font-size: 16px;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.78);
+        margin: 0 auto 32px;
+        max-width: 420px;
       }
 
+      .glass {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 20px;
+        padding: 26px;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 24px 60px rgba(3, 6, 20, 0.55);
+        text-align: left;
+      }
+      .field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.75);
+        margin: 0 0 8px;
+      }
+      .input-row { display: flex; gap: 10px; }
       input[type="url"],
       input[type="text"] {
-        font-size: inherit;
-        line-height: inherit;
-        border: medium none;
-        background: rgba(0, 0, 0, 0)
-          url("data:image/svg+xml;base64,PHN2ZyBvcGFjaXR5PSIuNyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNTAgNTAiPjxwYXRoIGQ9Ik0zOCA1MEgxMkM1LjQgNTAgMCA0NC42IDAgMzhWMTJDMCA1LjQgNS40IDAgMTIgMGgyNmM2LjYgMCAxMiA1LjQgMTIgMTJ2MjZjMCA2LjYtNS40IDEyLTEyIDEyeiIgZmlsbD0iIzNkMzY0ZiIvPjxwYXRoIGQ9Ik0zMi40IDM1LjdjLTEuMi44LTMuMiAxLjQtNS4xIDEuNC00LjEgMC02LjYtMS42LTYuNi01LjhWMjNoLTMuMXYtNC40aDMuMXYtNGw2LjEtMS43djUuN2g1LjRWMjNoLTUuNHY3LjJjMCAxLjcuOSAyLjQgMi40IDIuNCAxLjEgMCAxLjktLjMgMi42LS44bC42IDMuOXoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=")
-          no-repeat scroll 97% center / 16px;
-        width: 300px;
-        display: inline-block;
-        resize: none;
-        padding: 0px;
-        cursor: auto;
-        box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset,
-          rgba(15, 15, 15, 0.1) 0px 1px 1px inset;
+        flex: 1;
+        min-width: 0;
         font-size: 15px;
-        line-height: 26px;
-        padding: 4px 10px;
+        line-height: 24px;
+        padding: 11px 14px;
+        color: #0a1230;
+        background: #fff;
+        border: 1px solid transparent;
+        border-radius: var(--radius);
         outline: none;
-        color: rgb(4, 4, 4);
-        border-radius: 3px;
+        transition: box-shadow 140ms ease;
       }
+      input[type="url"]::placeholder { color: #8890a8; }
+      input:focus { box-shadow: 0 0 0 4px rgba(0, 230, 118, 0.45); }
+      input.invalid { box-shadow: 0 0 0 4px rgba(255, 86, 76, 0.45) !important; }
 
-      .hide {
-        display: none !important;
+      .error-msg {
+        margin: 10px 2px 0;
+        font-size: 13px;
+        line-height: 1.45;
+        color: #ffbcb4;
       }
+      .error-msg::before { content: "\26A0  "; }
+
+      button {
+        flex: 0 0 auto;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ink);
+        background: var(--green);
+        border: 0;
+        border-radius: var(--radius);
+        padding: 0 22px;
+        height: 48px;
+        cursor: pointer;
+        transition: transform 60ms ease, background 140ms ease, box-shadow 140ms ease;
+        box-shadow: 0 8px 22px rgba(0, 230, 118, 0.28);
+        white-space: nowrap;
+      }
+      button:hover { background: #14f085; box-shadow: 0 12px 28px rgba(0, 230, 118, 0.36); }
+      button:active { transform: translateY(1px); }
+      button.ghost {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        box-shadow: none;
+      }
+      button.ghost:hover { background: rgba(255, 255, 255, 0.18); }
+
+      #form-result { margin-top: 18px; }
 
       .disclaimer {
-        color: #bbb;
-        font-size: 0.8em;
+        margin: 28px 0 0;
         text-align: center;
-        line-height: 1.5;
+        font-size: 12px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.6);
       }
+      .disclaimer a { color: var(--green); text-decoration: none; font-weight: 600; }
+      .disclaimer a:hover { text-decoration: underline; }
 
-      .disclaimer a {
-          color: #bbb;
-      }
+      .hide { display: none !important; }
+      #draw-iframe { width: 100%; height: 100%; border: 0; }
     </style>
   </head>
   <body>
-    <div class="container form-container">
-      <div id="form">
-        <div id="form-entry">
-          <input
-            type="url"
-            placeholder="Camunda Cloud/Cawemo Share URL"
-            id="embedUrl"
-            name="embedUrl"
-          />
-          <input type="submit" value="Go" onclick="onGoClick()" />
+    <div class="container">
+      <div id="form" class="hero">
+        <span class="kicker">Camunda &rarr; Notion</span>
+        <h1>Bring your BPMN diagrams into Notion</h1>
+        <p class="lead">
+          Turn any camunda.io or Cawemo share link into a live, embeddable
+          diagram &mdash; right inside your Notion docs.
+        </p>
+
+        <div class="glass">
+          <div id="form-entry">
+            <label class="field-label" for="embedUrl">Paste your share URL</label>
+            <div class="input-row">
+              <input type="url" placeholder="https://modeler.camunda.io/share/…"
+                id="embedUrl" name="embedUrl" />
+              <button type="button" onclick="onGoClick()">Generate</button>
+            </div>
+            <p id="url-error" class="error-msg hide" role="alert"></p>
+          </div>
+
+          <div id="form-result" class="hide">
+            <label class="field-label" for="finalUrl">Embed this URL in Notion</label>
+            <div class="input-row">
+              <input type="url" readonly id="finalUrl" name="finalUrl" />
+              <button type="button" class="ghost" onclick="onCopyClick()">Copy</button>
+            </div>
+          </div>
         </div>
-        <div id="form-result" class="hide">
-          <span>Embed this URL in Notion:</span>
-          <input type="url" readonly id="finalUrl" name="finalUrl" />
-          <input type="submit" value="Copy" onclick="onCopyClick()" />
-        </div>
+
         <p class="disclaimer">
-          This website is in no way affiliated with Notion or Camunda<br/><a href="https://github.com/flowsquad/camunda-diagram-notion-embed" target="_blank">GitHub</a> &bullet; <a href="https://miragon.io/" target="_blank">Miragon</a>
+          Not affiliated with Notion or Camunda.<br />
+          <a href="https://github.com/flowsquad/camunda-diagram-notion-embed" target="_blank" rel="noopener">GitHub</a>
+          &bullet;
+          <a href="https://miragon.io/" target="_blank" rel="noopener">Miragon</a>
+          &bullet;
+          <a href="https://miragon.io/impressum/" target="_blank" rel="noopener">Impressum</a>
+          &bullet;
+          <a href="https://miragon.io/datenschutz/" target="_blank" rel="noopener">Datenschutz</a>
         </p>
       </div>
       <iframe id="draw-iframe" class="hide" src=""></iframe>
     </div>
 
     <script>
-      // From https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
       function getParameterByName(name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -136,48 +209,88 @@
         if (!results[2]) return "";
         return decodeURIComponent(results[2].replace(/\+/g, " "));
       }
+      function getBaseUrl() { return window.location.href.match(/^.*\//); }
 
-      // From https://stackoverflow.com/questions/23425909/javascript-jquery-get-root-url-of-website
-      function getBaseUrl() {
-        return window.location.href.match(/^.*\//);
+      function parseUrl(value) {
+        try { return new URL(value); } catch (e) { return null; }
+      }
+      // A web URL we can safely load in an iframe (blocks javascript:/data: etc.).
+      // Any host is allowed so self-hosted Camunda/Cawemo instances work too.
+      function isWebUrl(value) {
+        var parsed = parseUrl(value);
+        return !!parsed && (parsed.protocol === "https:" || parsed.protocol === "http:");
+      }
+      // Returns an error message, or null when the URL is valid.
+      function validateShareUrl(value) {
+        if (!value) return "Please paste a share URL.";
+        var parsed = parseUrl(value);
+        if (!parsed) return "That doesn't look like a valid URL.";
+        if (parsed.protocol !== "https:" && parsed.protocol !== "http:")
+          return "The URL must start with http:// or https://.";
+        return null;
       }
 
       function copy(elementId) {
-        /* Get the text field */
         var copyText = document.getElementById(elementId);
-
-        /* Select the text field */
         copyText.select();
-        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-        /* Copy the text inside the text field */
+        copyText.setSelectionRange(0, 99999);
         document.execCommand("copy");
-
-        /* Alert the copied text */
-        alert("Copied the text: " + copyText.value);
+        var btn = event.target; var old = btn.textContent;
+        btn.textContent = "Copied!"; setTimeout(function(){ btn.textContent = old; }, 1400);
       }
 
-      const url = getParameterByName("u");
+      // Embed mode: only render the iframe for real http(s) URLs
+      // (guards against javascript:/data: injection via the ?u= param).
+      var url = getParameterByName("u");
       if (url) {
-        document.querySelector(".container").classList.remove("form-container");
-        document.getElementById("form").classList.add("hide");
+        if (isWebUrl(url)) {
+          document.querySelector(".container").classList.add("embed-mode");
+          document.getElementById("form").classList.add("hide");
+          var iframe = document.getElementById("draw-iframe");
+          iframe.setAttribute("src", url);
+          iframe.classList.remove("hide");
+        } else {
+          var loadErr = document.getElementById("url-error");
+          loadErr.textContent = "This embed link isn't a valid http(s) URL.";
+          loadErr.classList.remove("hide");
+        }
+      }
 
-        const iframe = document.getElementById("draw-iframe");
-        iframe.setAttribute("src", url);
-        iframe.classList.remove("hide");
+      function showError(msg) {
+        var input = document.getElementById("embedUrl");
+        var err = document.getElementById("url-error");
+        err.textContent = msg;
+        err.classList.remove("hide");
+        input.classList.add("invalid");
+        input.setAttribute("aria-invalid", "true");
+        document.getElementById("form-result").classList.add("hide");
+      }
+      function clearError() {
+        var input = document.getElementById("embedUrl");
+        document.getElementById("url-error").classList.add("hide");
+        input.classList.remove("invalid");
+        input.removeAttribute("aria-invalid");
       }
 
       function onGoClick() {
-        const url = document.getElementById("embedUrl").value;
-
-        let finalUrl = getBaseUrl() + "?u=" + encodeURIComponent(url);
+        var value = document.getElementById("embedUrl").value.trim();
+        var error = validateShareUrl(value);
+        if (error) { showError(error); return; }
+        clearError();
+        var finalUrl = getBaseUrl() + "?u=" + encodeURIComponent(value);
         finalUrl = finalUrl.replace("share", "embed");
         document.getElementById("finalUrl").value = finalUrl;
         document.getElementById("form-result").classList.remove("hide");
       }
+      function onCopyClick() { copy("finalUrl"); }
 
-      function onCopyClick() {
-        copy("finalUrl");
+      // Clear the error as the user types; let Enter submit.
+      var embedInput = document.getElementById("embedUrl");
+      if (embedInput) {
+        embedInput.addEventListener("input", clearError);
+        embedInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") { e.preventDefault(); onGoClick(); }
+        });
       }
     </script>
   </body>
