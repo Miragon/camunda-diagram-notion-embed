@@ -1,0 +1,6 @@
+# Netlify deployment config.
+# This is a static site — a single index.html plus assets — so there is no build step.
+# Netlify serves the repository root as-is.
+[build]
+  publish = "."
+  command = ""

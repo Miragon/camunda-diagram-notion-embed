@@ -1,0 +1,55 @@
+name: Bug Report
+description: Report a bug or unexpected behaviour in camunda-diagram-notion-embed
+title: '[Fix]: '
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill in the details below to help us reproduce and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the behaviour. Include the share URL you used if possible.
+      placeholder: |
+        1. ...
+        2. ...
+        3. Observe the following error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behaviour
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behaviour
+      description: What actually happened? Include logs or screenshots if relevant.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser / OS
+      description: Which browser and operating system did you observe this on?
+      placeholder: e.g. Chrome 126 on macOS 14
+    validations:
+      required: false
