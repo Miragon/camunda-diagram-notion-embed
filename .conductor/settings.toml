@@ -1,0 +1,14 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+# Static site: one index.html, no build step, no dependencies.
+# No `setup` (nothing to install) and no `archive` (the preview server is bound
+# to $CONDUCTOR_PORT and torn down with the workspace — no external resources).
+
+[scripts]
+# Each workspace serves on its own $CONDUCTOR_PORT, so runs are isolated.
+run_mode = "concurrent"
+
+# Local preview of the static site. Open http://localhost:$CONDUCTOR_PORT
+[scripts.run.preview]
+command = "python3 -m http.server $CONDUCTOR_PORT"
+icon = "globe"
