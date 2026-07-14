@@ -10,8 +10,6 @@
 
 ![A live Camunda BPMN diagram embedded in a Notion page](images/example-notion-embed.png)
 
-*A live BPMN diagram embedded directly in a Notion page — zoomable and always up to date.*
-
 ## Why?
 
 Notion can't embed a camunda.io or Cawemo diagram out of the box. The usual workaround is to
