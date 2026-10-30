@@ -3,6 +3,12 @@
 Thanks for your interest in improving **camunda-diagram-notion-embed**! This is a small, single-file
 static app, so getting from clone to a merged PR is quick.
 
+## External contributions
+
+We're currently not accepting pull requests from outside the team. We don't have the resources to fully review and validate external contributions, so we can't guarantee that a merged change keeps the project free of bugs, free of security vulnerabilities or malicious code, and consistent with requirements that make sense for it. Pull requests opened by external contributors will be closed.
+
+If you've found a bug or have an idea, please [open an issue](https://github.com/Miragon/camunda-diagram-notion-embed/issues/new) instead. We read every one, and it's the best way to get something onto our radar.
+
 ## Project layout
 
 - `index.html` — the entire app (HTML, CSS, and vanilla JavaScript in one file).
@@ -41,7 +47,7 @@ docs: clarify how-to-use steps
 
 ## Pull request process
 
-1. Fork the repo and create a branch (`feat/short-description` or `fix/short-description`).
+1. Create a branch (`feat/short-description` or `fix/short-description`).
 2. Make your change and test it manually as above.
 3. Open a pull request against `main`, filling in the PR template and linking any related issue.
 4. A maintainer will review — feel free to ask questions in the PR or a related issue.
