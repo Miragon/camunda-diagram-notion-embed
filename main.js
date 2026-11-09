@@ -1,13 +1,18 @@
-import { isEmbeddableUrl, readRequestedEmbedUrl, showEmbed } from "./embed.js";
-import { setUpForm, showError } from "./form.js";
+import { EmbedView } from "./embed-view.js";
+import { InvalidUrlError } from "./https-url.js";
+import { NotionEmbedLink } from "./notion-embed-link.js";
+import { ShareForm } from "./share-form.js";
 
-const requestedEmbedUrl = readRequestedEmbedUrl(window.location);
+const notionEmbedLink = new NotionEmbedLink(window.location);
 
-if (requestedEmbedUrl === null) {
-  setUpForm();
-} else if (isEmbeddableUrl(requestedEmbedUrl)) {
-  showEmbed(requestedEmbedUrl);
-} else {
-  setUpForm();
-  showError("This embed link isn't a valid https:// URL.");
+function showRequestedEmbed() {
+  try {
+    new EmbedView().show(notionEmbedLink.requestedEmbedUrl);
+  } catch (error) {
+    if (!(error instanceof InvalidUrlError)) throw error;
+    new ShareForm(notionEmbedLink).showError(error.message);
+  }
 }
+
+if (notionEmbedLink.requestsEmbed) showRequestedEmbed();
+else new ShareForm(notionEmbedLink);

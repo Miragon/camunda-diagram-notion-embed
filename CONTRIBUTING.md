@@ -12,9 +12,12 @@ If you've found a bug or have an idea, please [open an issue](https://github.com
 
 - `index.html` — the page markup.
 - `styles.css` — the page design.
-- `embed.js` — turns a share URL into the embed URL and renders the embed.
-- `form.js` — the form: input, **Generate**, **Copy** and error messages.
 - `main.js` — the entry point: shows the embed when the page has a `?u=` parameter, the form otherwise.
+- `share-url.js` — `ShareUrl`: validates a Camunda share URL and turns it into the embed URL.
+- `notion-embed-link.js` — `NotionEmbedLink`: builds the `?u=` link for Notion and reads it back.
+- `https-url.js` — `HttpsUrl` and `InvalidUrlError`: accepts only `https://` URLs.
+- `share-form.js` — `ShareForm`: input, **Generate**, **Copy** and error messages.
+- `embed-view.js` — `EmbedView`: renders the embed in a full-screen iframe.
 - `images/` — assets.
 
 There is no build step, no framework, and no dependencies.
