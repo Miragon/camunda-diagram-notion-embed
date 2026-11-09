@@ -1,73 +1,45 @@
-[![MIT License][license-shield]][license-url]
-[![Issues][issues-shield]][issues-url]
-[![Stars][stars-shield]][stars-url]
+# Camunda Diagram Notion Embed
 
-# Camunda Diagram → Notion Embed
+[![Open the tool](https://img.shields.io/badge/Web_app-Open_the_tool-00e676?style=for-the-badge)](https://miragon-camunda-diagram-notion-embed.netlify.app)
+[![License: MIT](https://img.shields.io/github/license/Miragon/camunda-diagram-notion-embed?style=for-the-badge)](LICENSE)
 
-**Put live Camunda 8 (camunda.io) and Cawemo BPMN diagrams directly into your Notion pages.**
+![A Notion page titled "My process model" with a live BPMN diagram from Camunda Web Modeler embedded in it, with zoom controls below the diagram](images/example-notion-embed.png)
 
-👉 **[Open the tool](https://miragon-camunda-diagram-notion-embed.netlify.app)**
+**Show your Camunda Web Modeler diagrams live in Notion, not as screenshots.**
 
-![A live Camunda BPMN diagram embedded in a Notion page](images/example-notion-embed.png)
+A free web page that turns a Camunda Web Modeler share link into a URL you paste into a Notion embed block.
 
-## Why?
+## Why
 
-Notion can't embed a camunda.io or Cawemo diagram out of the box. The usual workaround is to
-drop in a screenshot — which is stale the moment the process changes, and can't be zoomed or panned.
+Notion cannot embed a Camunda diagram on its own, so process docs end up with screenshots that go stale the moment the model changes. This tool closes that gap with a live embed.
 
-This tool gives you a URL you can paste into any Notion `/embed` block. The result is the **live,
-always-current diagram**, rendered right inside your document — no screenshots, no account, no
-tracking. It's a single HTML page you can use as-is or self-host.
+## What you get
 
-## How to use it
+- **Always current.** Edits in the modeler show up the next time the Notion page opens, as long as the share link exists.
+- **Zoom and pan.** Readers explore the diagram right in the page.
+- **Nothing to install.** Readers need no Camunda account, and the tool stores nothing.
 
-1. Open **[the tool](https://miragon-camunda-diagram-notion-embed.netlify.app)**.
-2. In camunda.io or Cawemo, open your diagram and copy its **Share** link.
-3. Paste the link into the tool, click **Go**, then **Copy**.
-4. In Notion, type `/embed`, paste the copied URL, and press Enter.
+## Get started
 
-Your diagram now renders live in the page.
+1. In Camunda Web Modeler, open your diagram, choose **Share** from the menu in the top right, click **Create link**, then **Copy**, not **Embed** ([Camunda docs](https://docs.camunda.io/docs/components/modeler/web-modeler/collaboration/)).
+2. Open [the tool](https://miragon-camunda-diagram-notion-embed.netlify.app), paste the link, click **Generate**, then **Copy**.
+3. In Notion, type `/embed`, paste the copied URL and click **Embed link**: the diagram appears in your page.
 
-> [!IMPORTANT]
-> The share link must be a **public** link — anyone with the URL needs to be able to open the
-> diagram. Notion loads it directly from camunda.io / Cawemo, so a private or login-protected link
-> won't render.
+Anyone who has the share link can see the diagram, whatever your Notion permissions are. Check the link in a private browser window first: if Camunda asks you to sign in, the embed stays empty.
 
-## How it works
+## Help and feedback
 
-The whole app is one static `index.html` — no backend, no build step, no dependencies.
-
-- It takes your **share** URL and rewrites `share` → `embed` to get Camunda's embeddable view.
-- It wraps that as `…/?u=<encoded-embed-url>` — the URL you paste into Notion.
-- When the page is opened with `?u=`, it renders the embed URL in a full-screen `<iframe>`, which
-  is exactly what Notion's embed block loads.
-
-## Run or self-host
-
-It's a static file, so any static host works. To run it locally:
-
-```bash
-git clone https://github.com/Miragon/camunda-diagram-notion-embed.git
-cd camunda-diagram-notion-embed
-python3 -m http.server 8000   # then open http://localhost:8000
-```
-
-Built with plain HTML, CSS, and vanilla JavaScript.
+- **Bugs and ideas:** [open an issue](https://github.com/Miragon/camunda-diagram-notion-embed/issues).
+- **Security:** report vulnerabilities privately via [SECURITY.md](SECURITY.md).
 
 ## Contributing
 
-Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started, and
-please open an [issue](https://github.com/Miragon/camunda-diagram-notion-embed/issues) for bugs or
-feature ideas. All participation is governed by our [Code of Conduct](CODE_OF_CONDUCT.md).
+Developer setup is in [CONTRIBUTING.md](CONTRIBUTING.md). We currently do not accept pull requests from outside the team; please open an issue instead.
+
+## Credits
+
+Inspired by [drawio-notion-embed](https://github.com/ivankahl/drawio-notion-embed) by Ivan Kahl.
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](LICENSE) for details.
-
-<!-- MARKDOWN LINKS & IMAGES -->
-[license-shield]: https://img.shields.io/github/license/Miragon/camunda-diagram-notion-embed.svg?style=for-the-badge
-[license-url]: https://github.com/Miragon/camunda-diagram-notion-embed/blob/main/LICENSE
-[issues-shield]: https://img.shields.io/github/issues/Miragon/camunda-diagram-notion-embed.svg?style=for-the-badge
-[issues-url]: https://github.com/Miragon/camunda-diagram-notion-embed/issues
-[stars-shield]: https://img.shields.io/github/stars/Miragon/camunda-diagram-notion-embed.svg?style=for-the-badge
-[stars-url]: https://github.com/Miragon/camunda-diagram-notion-embed/stargazers
+[MIT](LICENSE) © Miragon GmbH
